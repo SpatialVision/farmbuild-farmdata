@@ -9,6 +9,6 @@
     "angular-mocks": "1.6.5",
     "bootstrap": "^3.2",
     "node-uuid": "1.4.2",
-    "farmbuild-core": "git@github.com:SpatialVision/farmbuild-core.git#^1.1.0"
+    "farmbuild-core": "https://github.com/SpatialVision/farmbuild-core.git#^1.1.0"
   }
 }
