@@ -33,7 +33,7 @@ angular.module('farmbuild.farmdata')
 		}
 
 		function generateId() {
-			return (new Date()).getTime();
+			return uuid.v4();
 		}
 
 		function createPaddockFeature(geoJsonGeometry) {
@@ -44,7 +44,7 @@ angular.module('farmbuild.farmdata')
 
 		function createPaddock(paddockFeature, paddocksExisting, paddocksMerged) {
 			var name = paddockFeature.properties.name,
-				id = paddockFeature.properties._id;
+				id = paddockFeature.properties.id;
 			name = _isDefined(name) ? name : createName();
 			id = _isDefined(id) ? id : generateId();
 			if(!farmdataPaddockValidator.validateFeature(paddockFeature, paddocksExisting) || !farmdataPaddockValidator.validateFeature(paddockFeature, paddocksMerged)){
@@ -53,7 +53,7 @@ angular.module('farmbuild.farmdata')
 			}
 			return {
 				name: name,
-				_id: id,
+				id: id,
 				comment: paddockFeature.properties.comment,
 				type: paddockFeature.properties.type,
 				area: paddockFeature.properties.area,
