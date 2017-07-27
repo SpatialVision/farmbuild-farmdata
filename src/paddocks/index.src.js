@@ -191,9 +191,15 @@ angular.module('farmbuild.farmdata')
 		
 		farmdataPaddocks.toGeoJSON = function toGeoJSON(paddock) {
 			$log.info("Extracting farm and paddocks geometry from farmData ...");
-			return createFeature(convertToGeoJsonGeometry(paddock.geometry, paddock.geometry.crs),
+			var features = [];
+			features.push(createFeature(convertToGeoJsonGeometry(paddock.geometry, paddock.geometry.crs),
 				paddock.name, paddock.id, paddock.type, paddock.comment, paddock.area,
-				paddock.areaUnit, paddock.group, paddock.registered);
+				paddock.areaUnit, paddock.group, paddock.registered));
+			
+			return {
+				"type": "FeatureCollection",
+				"features": features
+			}
 		};
 		
 		farmdataPaddocks.public = {
