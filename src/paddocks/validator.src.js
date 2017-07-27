@@ -31,7 +31,7 @@ angular.module('farmbuild.farmdata')
 				return false;
 			}
 
-			if (!checkName(paddock.properties.name, paddock.properties._id, paddocksExisting)) {
+			if (!checkName(paddock.properties.name, paddock.properties.id, paddocksExisting)) {
 				return false;
 			}
 
@@ -46,7 +46,7 @@ angular.module('farmbuild.farmdata')
 				return false;
 			}
 
-			if (!checkName(paddock.name, paddock._id, paddocksExisting)) {
+			if (!checkName(paddock.name, paddock.id, paddocksExisting)) {
 				return false;
 			}
 
@@ -57,7 +57,7 @@ angular.module('farmbuild.farmdata')
 			$log.info('checking paddock for duplicate name...', name);
 			var result = true;
 			paddocksExisting.forEach(function (paddockExisting) {
-				if (name === paddockExisting.name && id !== paddockExisting._id) {
+				if (name === paddockExisting.name && id !== paddockExisting.id) {
 					$log.error('invalid paddock, name already exist: %s, %s, %j', name, id, paddockExisting);
 					result = false;
 				}

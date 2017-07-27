@@ -85,7 +85,7 @@
   },
   "paddocks": [    {
     "name": "P10",
-    "_id": 1434598791135,
+    "id": 1434598791135,
     "geometry": {
       "type": "Polygon",
       "coordinates": [
@@ -148,7 +148,7 @@
   },
     {
       "name": "P10",
-      "_id": 1434598791136,
+      "id": 1434598791136,
       "geometry": {
         "type": "Polygon",
         "coordinates": [
@@ -194,7 +194,7 @@
     },
     {
       "name": "P11",
-      "_id": 1434598791136,
+      "id": 1434598791136,
       "geometry": {
         "type": "Polygon",
         "coordinates": [

@@ -40,7 +40,7 @@ describe('farmbuild.farmdata module', function () {
 			"paddocks": [
 				{
 					"name": "DAMS",
-					_id: 22,
+					id: 22,
 					"geometry": {
 						"type": "Polygon",
 						"coordinates": [

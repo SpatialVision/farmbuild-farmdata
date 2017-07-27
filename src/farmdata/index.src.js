@@ -14,7 +14,7 @@
 angular.module('farmbuild.farmdata')
 	.factory('farmdata',
 	function ($log,
-	          farmdataSession, farmdataValidator, farmdataPaddockGroups, farmdataPaddockTypes,
+	          farmdataSession, farmdataValidator, farmdataPaddockGroups, farmdataPaddockTypes, farmdataPaddocks,
 	          crsSupported, validations) {
 		var farmdata =
 			{
@@ -64,8 +64,7 @@ angular.module('farmbuild.farmdata')
 					area: 0,
 					areaUnit: 'hectare'
 				}
-			}
-			;
+			};
 
 		farmdata.defaultValues = function () {
 			return angular.copy(defaults);
@@ -195,6 +194,14 @@ angular.module('farmbuild.farmdata')
 		 * @static
 		 */
 		farmdata.paddockTypes = farmdataPaddockTypes;
+
+		/**
+		 * Paddock collection api
+		 * @property {object} Types - Paddock types collection
+		 * @public
+		 * @static
+		 */
+		farmdata.paddocks = farmdataPaddocks.public;
 
 		window.farmbuild.farmdata = farmdata;
 
