@@ -1,15 +1,16 @@
 {
   "name": "farmbuild-farmdata",
   "description": "This project is a prototype application to show the complete cycle of development, test and qa in farm build project",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "homepage": "https://github.com/FarmBuild/farmbuild-farmdata",
   "private": false,
   "main": "./dist/farmbuild-farmdata.js",
   "dependencies": {
-    "angular": "1.6.5",
-    "angular-mocks": "1.6.5",
-    "bootstrap": "^3.2",
+    "farmbuild-core": "https://github.com/SpatialVision/farmbuild-core.git#^1.1.2"
+  },
+  "devDependencies": {
     "node-uuid": "1.4.2",
-    "farmbuild-core": "https://github.com/SpatialVision/farmbuild-core.git#^1.1.1"
+    "angular": "^1.6.5",
+    "angular-mocks": "^1.6.5"
   }
 }
