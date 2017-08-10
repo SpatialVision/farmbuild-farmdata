@@ -65,6 +65,8 @@ angular.module('farmbuild.farmdata')
 				areaUnit: paddockFeature.properties.areaUnit,
 				group: paddockFeature.properties.group,
 				registered: paddockFeature.properties.registered,
+				bbox: paddockFeature.properties.bbox,
+				availableNDVI: paddockFeature.properties.availableNDVI,
 				geometry: farmdataConverter.convertToFarmDataGeometry(paddockFeature.geometry),
 				dateLastUpdated: new Date()
 			};
@@ -100,6 +102,8 @@ angular.module('farmbuild.farmdata')
 			toUpdate.areaUnit = paddockFeature.properties.areaUnit;
 			toUpdate.group = paddockFeature.properties.group;
 			toUpdate.registered = paddockFeature.properties.registered;
+			toUpdate.bbox = paddockFeature.properties.bbox;
+			toUpdate.availableNDVI = paddockFeature.properties.availableNDVI;
 			toUpdate.geometry = farmdataConverter.convertToFarmDataGeometry(paddockFeature.geometry);
 			toUpdate.dateLastUpdated = new Date();
 			return toUpdate;
@@ -169,10 +173,10 @@ angular.module('farmbuild.farmdata')
 			return collections.byProperty(paddocks, 'name', name)
 		};
 		
-		function createFeature(geoJsonGeometry, name, id, type, comment, area, areaUnit, group, registered) {
+		function createFeature(geoJsonGeometry, name, id, type, comment, area, areaUnit, group, registered, availableNDVI, bbox) {
 			var properties;
 			if(_isDefined(type) || _isDefined(comment) || _isDefined(area) || _isDefined(areaUnit) || _isDefined(group)){
-				properties = {name: name, id: id, type: type, comment: comment, area: area, areaUnit: areaUnit, group: group, registered: registered}
+				properties = {name: name, id: id, type: type, comment: comment, area: area, areaUnit: areaUnit, group: group, registered: registered, availableNDVI: availableNDVI, bbox: bbox}
 			} else {
 				properties = {name: name, id: id, registered: false}
 			}
@@ -194,7 +198,7 @@ angular.module('farmbuild.farmdata')
 			var features = [];
 			features.push(createFeature(convertToGeoJsonGeometry(paddock.geometry, paddock.geometry.crs),
 				paddock.name, paddock.id, paddock.type, paddock.comment, paddock.area,
-				paddock.areaUnit, paddock.group, paddock.registered));
+				paddock.areaUnit, paddock.group, paddock.registered, paddock.availableNDVI, paddock.bbox));
 			
 			return {
 				"type": "FeatureCollection",
