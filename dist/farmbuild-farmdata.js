@@ -2025,6 +2025,7 @@ angular.module("farmbuild.farmdata").factory("farmdataPaddocks", function($log, 
             id: id,
             comment: paddockFeature.properties.comment,
             type: paddockFeature.properties.type,
+            history: paddockFeature.properties.history,
             area: paddockFeature.properties.area,
             areaUnit: paddockFeature.properties.areaUnit,
             group: paddockFeature.properties.group,
@@ -2057,6 +2058,7 @@ angular.module("farmbuild.farmdata").factory("farmdataPaddocks", function($log, 
         }
         toUpdate.name = paddockFeature.properties.name;
         toUpdate.comment = paddockFeature.properties.comment;
+        toUpdate.history = paddockFeature.properties.history;
         toUpdate.type = paddockFeature.properties.type;
         toUpdate.area = paddockFeature.properties.area;
         toUpdate.areaUnit = paddockFeature.properties.areaUnit;
@@ -2110,7 +2112,7 @@ angular.module("farmbuild.farmdata").factory("farmdataPaddocks", function($log, 
     farmdataPaddocks.byName = function(name, paddocks) {
         return collections.byProperty(paddocks, "name", name);
     };
-    function createFeature(geoJsonGeometry, name, id, type, comment, area, areaUnit, group, registered, availableNDVI, bbox) {
+    function createFeature(geoJsonGeometry, name, id, type, comment, area, areaUnit, group, registered, availableNDVI, bbox, history) {
         var properties;
         if (_isDefined(type) || _isDefined(comment) || _isDefined(area) || _isDefined(areaUnit) || _isDefined(group)) {
             properties = {
@@ -2123,7 +2125,8 @@ angular.module("farmbuild.farmdata").factory("farmdataPaddocks", function($log, 
                 group: group,
                 registered: registered,
                 availableNDVI: availableNDVI,
-                bbox: bbox
+                bbox: bbox,
+                history: history
             };
         } else {
             properties = {
@@ -2150,7 +2153,7 @@ angular.module("farmbuild.farmdata").factory("farmdataPaddocks", function($log, 
     farmdataPaddocks.toGeoJSON = function toGeoJSON(paddock) {
         $log.info("Extracting farm and paddocks geometry from farmData ...");
         var features = [];
-        features.push(createFeature(convertToGeoJsonGeometry(paddock.geometry, paddock.geometry.crs), paddock.name, paddock.id, paddock.type, paddock.comment, paddock.area, paddock.areaUnit, paddock.group, paddock.registered, paddock.availableNDVI, paddock.bbox));
+        features.push(createFeature(convertToGeoJsonGeometry(paddock.geometry, paddock.geometry.crs), paddock.name, paddock.id, paddock.type, paddock.comment, paddock.area, paddock.areaUnit, paddock.group, paddock.registered, paddock.availableNDVI, paddock.bbox, paddock.history));
         return {
             type: "FeatureCollection",
             features: features

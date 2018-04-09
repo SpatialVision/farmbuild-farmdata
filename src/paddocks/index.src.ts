@@ -1,44 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <title>paddocks/index.src.js - Documentation</title>
-
-    <script src="scripts/prettify/prettify.js"></script>
-    <script src="scripts/prettify/lang-css.js"></script>
-    <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
-    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
-</head>
-<body>
-
-<input type="checkbox" id="nav-trigger" class="nav-trigger" />
-<label for="nav-trigger" class="navicon-button x">
-  <div class="navicon"></div>
-</label>
-
-<label for="nav-trigger" class="overlay"></label>
-
-<nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-farmdata.html">farmdata</a><ul class='methods'><li data-type='method'><a href="module-farmdata.html#.create">create</a></li><li data-type='method'><a href="module-farmdata.html#.find">find</a></li><li data-type='method'><a href="module-farmdata.html#.isFarmData">isFarmData</a></li><li data-type='method'><a href="module-farmdata.html#.load">load</a></li><li data-type='method'><a href="module-farmdata.html#.merge">merge</a></li><li data-type='method'><a href="module-farmdata.html#.save">save</a></li><li data-type='method'><a href="module-farmdata.html#.update">update</a></li><li data-type='method'><a href="module-farmdata.html#.validate">validate</a></li></ul></li><li><a href="module-farmdata_paddockGroups.html">farmdata/paddockGroups</a><ul class='methods'><li data-type='method'><a href="module-farmdata_paddockGroups.html#.add">add</a></li><li data-type='method'><a href="module-farmdata_paddockGroups.html#.at">at</a></li><li data-type='method'><a href="module-farmdata_paddockGroups.html#.load">load</a></li><li data-type='method'><a href="module-farmdata_paddockGroups.html#.removeAt">removeAt</a></li><li data-type='method'><a href="module-farmdata_paddockGroups.html#.toArray">toArray</a></li></ul></li><li><a href="module-farmdata_paddocks.html">farmdata/paddocks</a><ul class='methods'><li data-type='method'><a href="module-farmdata_paddocks.html#.byId">byId</a></li><li data-type='method'><a href="module-farmdata_paddocks.html#.byName">byName</a></li><li data-type='method'><a href="module-farmdata_paddocks.html#.toGeoJSON">toGeoJSON</a></li></ul></li><li><a href="module-farmdata_paddockTypes.html">farmdata/paddockTypes</a><ul class='methods'><li data-type='method'><a href="module-farmdata_paddockTypes.html#.add">add</a></li><li data-type='method'><a href="module-farmdata_paddockTypes.html#.at">at</a></li><li data-type='method'><a href="module-farmdata_paddockTypes.html#.load">load</a></li><li data-type='method'><a href="module-farmdata_paddockTypes.html#.removeAt">removeAt</a></li><li data-type='method'><a href="module-farmdata_paddockTypes.html#.toArray">toArray</a></li></ul></li><li><a href="module-farmdata_session.html">farmdata/session</a><ul class='methods'><li data-type='method'><a href="module-farmdata_session.html#~export">export</a></li></ul></li></ul>
-</nav>
-
-<div id="main">
-    
-    <h1 class="page-title">paddocks/index.src.js</h1>
-    
-
-    
-
-
-
-    
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>/**
+/**
  * @since 0.0.1
  * @copyright 2015 State of Victoria
 
@@ -48,10 +8,29 @@
 
 'use strict';
 
+declare let angular: any;
+declare let uuid: any;
+
 /**
  * farmdataPaddocks class
  * @private-module farmdata/farmdataPaddocks
  */
+
+interface Paddock {
+    name: string;
+    id: string;
+    comment: string;
+    type: string;
+    history: string[];
+    area: number;
+    areaUnit: string;
+    group: string;
+    registered: boolean;
+    bbox: number[];
+    availableNDVI: any;
+    geometry: any;
+    dateLastUpdated: Date
+};
 
 /**
  * farmdata class
@@ -65,8 +44,7 @@ angular.module('farmbuild.farmdata')
 	          farmdataPaddockValidator,
 	          farmdataPaddockGroups,
 	          farmdataConverter) {
-		var farmdataPaddocks =
-			{},
+		var farmdataPaddocks = <any>{},
 			_isDefined = validations.isDefined;
 
 		function randomInt(min, max) {
@@ -87,7 +65,7 @@ angular.module('farmbuild.farmdata')
 
 		farmdataPaddocks.createPaddockFeature = createPaddockFeature;
 
-		function createPaddock(paddockFeature, paddocksExisting, paddocksMerged) {
+		function createPaddock(paddockFeature, paddocksExisting, paddocksMerged): Paddock {
 			var name = paddockFeature.properties.name,
 				id = paddockFeature.properties.id;
 			name = _isDefined(name) ? name : createName();
@@ -101,6 +79,7 @@ angular.module('farmbuild.farmdata')
 				id: id,
 				comment: paddockFeature.properties.comment,
 				type: paddockFeature.properties.type,
+				history: paddockFeature.properties.history,
 				area: paddockFeature.properties.area,
 				areaUnit: paddockFeature.properties.areaUnit,
 				group: paddockFeature.properties.group,
@@ -114,7 +93,7 @@ angular.module('farmbuild.farmdata')
 
 		farmdataPaddocks.createPaddock = createPaddock;
 
-		function findPaddock(paddock, paddocks) {
+		function findPaddock(paddock, paddocks): Paddock {
 			var found;
 			if (!paddock.properties.id) {
 				return;
@@ -129,7 +108,7 @@ angular.module('farmbuild.farmdata')
 
 		farmdataPaddocks.findPaddock = findPaddock;
 
-		function updatePaddock(paddockFeature, paddocksExisting, paddocksMerged) {
+		function updatePaddock(paddockFeature, paddocksExisting, paddocksMerged): Paddock {
 			var toUpdate = angular.copy(findPaddock(paddockFeature, paddocksExisting));
 			if(!farmdataPaddockValidator.validateFeature(paddockFeature, paddocksExisting) || !farmdataPaddockValidator.validateFeature(paddockFeature, paddocksMerged)){
 				$log.error('updating paddock failed, paddock data is invalid', paddockFeature);
@@ -137,6 +116,7 @@ angular.module('farmbuild.farmdata')
 			}
 			toUpdate.name = paddockFeature.properties.name;
 			toUpdate.comment = paddockFeature.properties.comment;
+			toUpdate.history = paddockFeature.properties.history;
 			toUpdate.type = paddockFeature.properties.type;
 			toUpdate.area = paddockFeature.properties.area;
 			toUpdate.areaUnit = paddockFeature.properties.areaUnit;
@@ -189,7 +169,7 @@ angular.module('farmbuild.farmdata')
 					}
 
 
-					if(paddockGroup.paddocks.indexOf(paddockName) &lt; 0) {
+					if(paddockGroup.paddocks.indexOf(paddockName) < 0) {
 						paddockGroup.paddocks.push(paddockFeature.properties.name);
 					}
 
@@ -213,10 +193,10 @@ angular.module('farmbuild.farmdata')
 			return collections.byProperty(paddocks, 'name', name)
 		};
 		
-		function createFeature(geoJsonGeometry, name, id, type, comment, area, areaUnit, group, registered, availableNDVI, bbox) {
+		function createFeature(geoJsonGeometry, name, id, type, comment, area, areaUnit, group, registered, availableNDVI, bbox, history) {
 			var properties;
 			if(_isDefined(type) || _isDefined(comment) || _isDefined(area) || _isDefined(areaUnit) || _isDefined(group)){
-				properties = {name: name, id: id, type: type, comment: comment, area: area, areaUnit: areaUnit, group: group, registered: registered, availableNDVI: availableNDVI, bbox: bbox}
+				properties = {name: name, id: id, type: type, comment: comment, area: area, areaUnit: areaUnit, group: group, registered: registered, availableNDVI: availableNDVI, bbox: bbox, history: history}
 			} else {
 				properties = {name: name, id: id, registered: false}
 			}
@@ -238,7 +218,7 @@ angular.module('farmbuild.farmdata')
 			var features = [];
 			features.push(createFeature(convertToGeoJsonGeometry(paddock.geometry, paddock.geometry.crs),
 				paddock.name, paddock.id, paddock.type, paddock.comment, paddock.area,
-				paddock.areaUnit, paddock.group, paddock.registered, paddock.availableNDVI, paddock.bbox));
+				paddock.areaUnit, paddock.group, paddock.registered, paddock.availableNDVI, paddock.bbox, paddock.history));
 			
 			return {
 				"type": "FeatureCollection",
@@ -290,22 +270,3 @@ angular.module('farmbuild.farmdata')
 		return farmdataPaddocks;
 
 	});
-</code></pre>
-        </article>
-    </section>
-
-
-
-
-</div>
-
-<br class="clear">
-
-<footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Thu Aug 10 2017 13:48:22 GMT+1000 (AEST) using the Minami theme.
-</footer>
-
-<script>prettyPrint();</script>
-<script src="scripts/linenumber.js"></script>
-</body>
-</html>
