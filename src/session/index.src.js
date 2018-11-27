@@ -106,48 +106,6 @@ angular.module('farmbuild.farmdata')
 			return farmdataSession.save(farmData).find();
 		};
 
-		/**
-		 * Exports the farmData.json with a file name: farmdata-NAME_OF_FILE-yyyyMMddHHmmss.json
-		 * It creates <a> element with 'download' attribute, the data is attached to href
-		 * and invoke click() function so the user gets the file save dialogue or something equivalent.
-		 * @method export
-		 * @param {object} document
-		 * @param {object} farmData
-		 */
-		farmdataSession.export = function (document, farmData) {
-			var a = document.createElement("a"),
-				name = "farmdata-" + farmData.name.replace(/\W+/g, "") + "-" + $filter("date")(new Date(), "yyyyMMddHHmmss") + ".json";
-			a.id = "downloadFarmData123456";
-			document.body.appendChild(a);
-			angular.element(a).attr({
-				download: name,
-				href: "data:application/json;charset=utf8," + encodeURIComponent(JSON.stringify(farmData, undefined, 2))
-			})
-			a.click();
-		};
-
-		farmdataSession.isLoadFlagSet = function (location) {
-			var load = false;
-
-			if (location.href.split('?').length > 1 &&
-				location.href.split('?')[1].indexOf('load') === 0) {
-				load = (location.href.split('?')[1].split('=')[1].indexOf('true') > -1);
-			}
-
-			return load;
-		}
-
-		farmdataSession.setLoadFlag = function (location) {
-			var path = farmdataSession.clearLoadFlag(location);
-			return path + '?load=true';
-		}
-
-		farmdataSession.clearLoadFlag = function (location) {
-			var path = location.href.toString(),
-				path = path.substring(0, path.indexOf('?'));
-			return path;
-		}
-
 		return farmdataSession;
 
 	});
