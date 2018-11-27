@@ -19,10 +19,7 @@ angular.module('farmbuild.farmdata')
   function (validations,
             $log) {
     var geoJsonValidator = {geojsonhint:geojsonhint},
-      _isDefined = validations.isDefined,
-      _isArray = validations.isArray,
-      _isPositiveNumber = validations.isPositiveNumber,
-      _isEmpty = validations.isEmpty;
+      _isDefined = validations.isDefined;
 
     if(!_isDefined(geojsonhint)) {
       throw Error('geojsonhint must be available!')

@@ -21,17 +21,12 @@ angular.module('farmbuild.core')
         isGeoJsons: geoJsonValidator.isGeoJsons
       },
       _isDefined = validations.isDefined,
-      _isArray = validations.isArray,
-      _isPositiveNumber = validations.isPositiveNumber,
       _isPositiveNumberOrZero = validations.isPositiveNumberOrZero,
       _isEmpty = validations.isEmpty,
       _isObject = validations.isObject,
       _isString = validations.isString,
       areaUnitDefault = 'hectare';
 
-    function errorLog() {
-
-    }
     function _validate(farmData) {
       var hasInvalidPaddock = false;
       $log.info('validating farmData...');

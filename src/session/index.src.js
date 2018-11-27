@@ -17,7 +17,6 @@ angular.module('farmbuild.farmdata')
 	          farmdataValidator,
 	          farmdataConverter,
 	          farmdataPaddocks,
-	          farmdataPaddockGroups,
 	          farmdataPaddockTypes,
 	          validations) {
 		var farmdataSession = {},
@@ -27,8 +26,7 @@ angular.module('farmbuild.farmdata')
 		function merge(farmData, geoJsons) {
 			$log.info("Merging geoJsons.farm.features[0] and paddocks geojson to farmData ...");
 
-			var farmFeature = geoJsons.farm.features[0],
-				paddocks = geoJsons.paddocks;
+			var farmFeature = geoJsons.farm.features[0];
 			farmData.geometry = farmdataConverter.convertToFarmDataGeometry(farmFeature.geometry);
 
 
@@ -60,7 +58,6 @@ angular.module('farmbuild.farmdata')
 		farmdataSession.update = function (farmData) {
 			$log.info('update farmData');
 			farmData.dateLastUpdated = new Date();
-			saveOption(farmData, farmdataPaddockGroups, "paddockGroups");
 			saveOption(farmData, farmdataPaddockTypes, "paddockTypes");
 			farmdataSession.save(farmData);
 			return farmdataSession;
@@ -77,7 +74,6 @@ angular.module('farmbuild.farmdata')
 			if (!isDefined(options)) {
 				return;
 			}
-			populateOption(options.paddockGroups, farmdataPaddockGroups);
 			populateOption(options.paddockTypes, farmdataPaddockTypes);
 		}
 

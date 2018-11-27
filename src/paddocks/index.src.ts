@@ -24,7 +24,6 @@ interface Paddock {
     history: string[];
     area: number;
     areaUnit: string;
-    group: string;
     registered: boolean;
     bbox: number[];
     availableNDVI: any;
@@ -42,7 +41,6 @@ angular.module('farmbuild.farmdata')
 	          collections,
 	          validations,
 	          farmdataPaddockValidator,
-	          farmdataPaddockGroups,
 	          farmdataConverter) {
 		var farmdataPaddocks = <any>{},
 			_isDefined = validations.isDefined;
@@ -82,7 +80,6 @@ angular.module('farmbuild.farmdata')
 				history: paddockFeature.properties.history,
 				area: paddockFeature.properties.area,
 				areaUnit: paddockFeature.properties.areaUnit,
-				group: paddockFeature.properties.group,
 				registered: paddockFeature.properties.registered,
 				bbox: paddockFeature.properties.bbox,
 				availableNDVI: paddockFeature.properties.availableNDVI,
@@ -120,7 +117,6 @@ angular.module('farmbuild.farmdata')
 			toUpdate.type = paddockFeature.properties.type;
 			toUpdate.area = paddockFeature.properties.area;
 			toUpdate.areaUnit = paddockFeature.properties.areaUnit;
-			toUpdate.group = paddockFeature.properties.group;
 			toUpdate.registered = paddockFeature.properties.registered;
 			toUpdate.bbox = paddockFeature.properties.bbox;
 			toUpdate.availableNDVI = paddockFeature.properties.availableNDVI;
@@ -150,7 +146,6 @@ angular.module('farmbuild.farmdata')
 			var paddockFeatures = geoJsons.paddocks,
 				paddocksExisting = farmData.paddocks,
 				paddocksMerged = [],
-				paddockGroups = [],
 				failed = false;
 
 			paddockFeatures.features.forEach(function (paddockFeature, i) {
@@ -160,24 +155,9 @@ angular.module('farmbuild.farmdata')
 					failed = true;
 				}
 				paddocksMerged.push(merged);
-				if (paddockFeature.properties.group) {
-					var paddockGroup = farmdataPaddockGroups.byName(paddockFeature.properties.group.name),
-						paddockName = paddockFeature.properties.name;
-					if (!_isDefined(paddockGroup)) {
-						paddockGroup = farmdataPaddockGroups.create(paddockFeature.properties.group.name);
-						paddockGroups.push(paddockGroup);
-					}
-
-
-					if(paddockGroup.paddocks.indexOf(paddockName) < 0) {
-						paddockGroup.paddocks.push(paddockFeature.properties.name);
-					}
-
-				}
 			});
 
 			farmData.paddocks = paddocksMerged;
-			farmData.paddockGroups = paddockGroups;
 
 			if(!failed) {
 				return farmData;
@@ -193,10 +173,10 @@ angular.module('farmbuild.farmdata')
 			return collections.byProperty(paddocks, 'name', name)
 		};
 		
-		function createFeature(geoJsonGeometry, name, id, type, comment, area, areaUnit, group, registered, availableNDVI, bbox, history) {
+		function createFeature(geoJsonGeometry, name, id, type, comment, area, areaUnit, registered, availableNDVI, bbox, history) {
 			var properties;
-			if(_isDefined(type) || _isDefined(comment) || _isDefined(area) || _isDefined(areaUnit) || _isDefined(group)){
-				properties = {name: name, id: id, type: type, comment: comment, area: area, areaUnit: areaUnit, group: group, registered: registered, availableNDVI: availableNDVI, bbox: bbox, history: history}
+			if(_isDefined(type) || _isDefined(comment) || _isDefined(area) || _isDefined(areaUnit)){
+				properties = {name: name, id: id, type: type, comment: comment, area: area, areaUnit: areaUnit, registered: registered, availableNDVI: availableNDVI, bbox: bbox, history: history}
 			} else {
 				properties = {name: name, id: id, registered: false}
 			}
@@ -218,7 +198,7 @@ angular.module('farmbuild.farmdata')
 			var features = [];
 			features.push(createFeature(convertToGeoJsonGeometry(paddock.geometry, paddock.geometry.crs),
 				paddock.name, paddock.id, paddock.type, paddock.comment, paddock.area,
-				paddock.areaUnit, paddock.group, paddock.registered, paddock.availableNDVI, paddock.bbox, paddock.history));
+				paddock.areaUnit, paddock.registered, paddock.availableNDVI, paddock.bbox, paddock.history));
 			
 			return {
 				"type": "FeatureCollection",
@@ -257,15 +237,6 @@ angular.module('farmbuild.farmdata')
 			 */
 			toGeoJSON: farmdataPaddocks.toGeoJSON
 		};
-
-
-//    function _add(geoJsons, geoJsonGeometry) {
-//      $log.info('farmdataPaddocks.add item ...', geoJsonGeometry);
-//      geoJsons.paddocks.features.push(geoJsonGeometry);
-//      return geoJsons;
-//    };
-//
-//    farmdataPaddocks.add = _add
 
 		return farmdataPaddocks;
 

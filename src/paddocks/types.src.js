@@ -60,16 +60,6 @@ angular.module('farmbuild.farmdata')
        * @static
        */
       add: _add,
-      /**
-       * Returns the PaddockType at specified index
-       * @method at
-       * @returns {object} PaddockType
-       * @public
-       * @static
-       */
-      at: function(index) { return collections.at(_types, index)},
-      size: function() { return collections.size(_types)},
-      byName: function(name) { return collections.byProperty(_types, 'name', name)},
       defaultTypes: function() { return angular.copy(paddockTypeDefaults.types)},
       /**
        * Returns PaddockTypes collection as an array
@@ -79,15 +69,6 @@ angular.module('farmbuild.farmdata')
        * @static
        */
       toArray: function() { return angular.copy(_types) },
-      /**
-       * Removes the Paddock type at specified index
-       * @method removeAt
-       * @returns {object} PaddockTypes collection
-       * @public
-       * @static
-       */
-      removeAt: function(index) { return collections.removeAt(_types, index)},
-      last: function() { return collections.last(_types) },
       /**
        * Loads the types in PaddockTypes
        * @method load

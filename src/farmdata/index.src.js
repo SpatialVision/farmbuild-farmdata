@@ -14,7 +14,7 @@
 angular.module('farmbuild.farmdata')
 	.factory('farmdata',
 	function ($log,
-	          farmdataSession, farmdataValidator, farmdataPaddockGroups, farmdataPaddockTypes, farmdataPaddocks,
+	          farmdataSession, farmdataValidator, farmdataPaddockTypes, farmdataPaddocks,
 	          crsSupported, validations) {
 		var farmdata =
 			{
@@ -44,7 +44,6 @@ angular.module('farmbuild.farmdata')
 				if (!isDefined(options)) {
 					return;
 				}
-				populateOption(options.paddockGroups, farmdataPaddockGroups);
 				populateOption(options.paddockTypes, farmdataPaddockTypes);
 			},
 			create = function (name, id, projectionName, options) {
@@ -59,7 +58,6 @@ angular.module('farmbuild.farmdata')
 					name: (isEmpty(name) ? defaults.name : name),
 					geometry: geometry(projectionName),
 					paddocks: [],
-					paddockGroups: farmdataPaddockGroups.toArray(),
 					paddockTypes: farmdataPaddockTypes.toArray(),
 					area: 0,
 					areaUnit: 'hectare'
@@ -69,26 +67,6 @@ angular.module('farmbuild.farmdata')
 		farmdata.defaultValues = function () {
 			return angular.copy(defaults);
 		}
-
-//    function parameterByName(search, name) {
-//      name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-//      var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-//        results = regex.exec(location.search);
-//      return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
-//    }
-
-		/**
-		 * Evaluates the parameter if it's a farmData instance by examining the props defined.
-		 * farmdata instance must be:
-		 * @method isFarmData
-		 * @param {object} farmData instance
-		 * @returns {boolean} true if it's a farmData object, false otherwise
-		 * @public
-		 * @static
-		 */
-		farmdata.isFarmData = function (farmData) {
-			return farmdataValidator.validate(farmData);
-		};
 
 		/**
 		 * Evaluates the parameter if it's a farmData instance by examining the props defined.
@@ -178,14 +156,6 @@ angular.module('farmbuild.farmdata')
 				return farmData;
 			}
 		}
-
-		/**
-		 * Paddock groups collection api
-		 * @property {object} Groups - Paddock groups collection
-		 * @public
-		 * @static
-		 */
-		farmdata.paddockGroups = farmdataPaddockGroups;
 
 		/**
 		 * Paddock types collection api
